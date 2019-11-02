@@ -1,0 +1,47 @@
+package bg.sofia.uni.fmi.mjt.smartcity.device;
+
+import java.time.LocalDateTime;
+
+import bg.sofia.uni.fmi.mjt.smartcity.enums.DeviceType;
+
+public class SmartTrafficLight extends AbstractSmartDevice {
+	private final String ID;
+	private static int counter = 0;
+	
+
+	public SmartTrafficLight(String name, double powerConsumption, LocalDateTime installationDateTime) {
+		super(name, powerConsumption, installationDateTime, DeviceType.TRAFFIC_LIGHT);
+		ID = DeviceType.TRAFFIC_LIGHT.getShortName() + "-" + name + "-" + counter;
+		counter++;
+	}
+
+	@Override
+	public String getId() {
+		return ID;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ID == null) ? 0 : ID.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SmartTrafficLight other = (SmartTrafficLight) obj;
+		if (ID == null) {
+			if (other.ID != null)
+				return false;
+		} else if (!ID.equals(other.ID))
+			return false;
+		return true;
+	}
+}
