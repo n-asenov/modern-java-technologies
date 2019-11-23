@@ -40,5 +40,4 @@ public class AppleTest {
                 apple.getPrice() + 1);
         assertFalse(apple.equals(differentApple));
     }
-
 }
