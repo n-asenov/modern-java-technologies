@@ -188,4 +188,15 @@ public class StyleCheckerTest {
 
         assertEquals(line, output.toString());
     }
+    
+    @Test
+    public void testCheckStyleWithCornerCaseValidStatement() {
+        String line = "statement;\t; \t\t;   ;";
+        
+        input = new StringReader(line);
+        
+        checker.checkStyle(input, output);
+        
+        assertEquals(line, output.toString());
+    }
 }
