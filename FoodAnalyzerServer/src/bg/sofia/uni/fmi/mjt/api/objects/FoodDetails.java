@@ -28,8 +28,8 @@ public class FoodDetails {
         StringBuilder string = new StringBuilder();
         String newLine = System.lineSeparator();
         
-        string.append("name: ").append(description).append(newLine)
-            .append("ingredients: ").append(ingredients).append(newLine)
+        string.append("Name: ").append(description).append(newLine)
+            .append("Ingredients: ").append(ingredients).append(newLine)
             .append(labelNutrients.toString());
         
         return string.toString();
