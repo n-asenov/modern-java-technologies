@@ -1,6 +1,6 @@
-package bg.sofia.uni.fmi.mjt.api.objects.nutrients;
+package bg.sofia.uni.fmi.mjt.api.objects;
 
-public abstract class Nutrient {
+public class Nutrient {
     private double value;
     
     public Nutrient(double value) {
