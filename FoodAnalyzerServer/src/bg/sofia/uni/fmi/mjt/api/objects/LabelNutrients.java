@@ -35,4 +35,17 @@ public class LabelNutrients {
         return calories;
     }
     
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        String newLine = System.lineSeparator();
+        
+        string.append("Calories: ").append(calories.getValue()).append(newLine)
+            .append("Protein: ").append(protein.getValue()).append(newLine)
+            .append("Fat: ").append(fat.getValue()).append(newLine)
+            .append("Carbohydrates: ").append(carbohydrates.getValue()).append(newLine)
+            .append("Fiber: ").append(fiber.getValue()).append(newLine);
+        
+        return string.toString();
+    }
 }
