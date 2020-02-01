@@ -1,22 +1,27 @@
 package bg.sofia.uni.fmi.mjt.api;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atMostOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.Gson;
 
+import bg.sofia.uni.fmi.mjt.api.objects.Food;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodDetails;
+import bg.sofia.uni.fmi.mjt.api.objects.FoodSearchResponse;
 import bg.sofia.uni.fmi.mjt.api.objects.LabelNutrients;
 import bg.sofia.uni.fmi.mjt.api.objects.Nutrient;
 
@@ -76,6 +81,16 @@ public class FoodDataClientTest {
         when(mockedResponse.statusCode()).thenReturn(INTERNAL_SERVER_ERROR);
         
         apiClient.getFoodDetails(invalidFoodId);
+    }
+    
+    @Test (expected = NoMatchException.class)
+    public void testSearchFoodWithNoMatchingFoodName() throws IOException, InterruptedException, NoMatchException {
+        FoodSearchResponse foodSearchResponse = new FoodSearchResponse(0, 1, 0, null);
+        
+        when(mockedClient.send(any(), any())).thenReturn(mockedResponse);
+        when(mockedResponse.body()).thenReturn(gson.toJson(foodSearchResponse));
+        
+        apiClient.searchFood("test");
     }
     
 }
