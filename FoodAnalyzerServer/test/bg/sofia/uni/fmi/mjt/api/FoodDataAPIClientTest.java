@@ -25,7 +25,7 @@ import bg.sofia.uni.fmi.mjt.api.objects.FoodSearchResponse;
 import bg.sofia.uni.fmi.mjt.api.objects.LabelNutrients;
 import bg.sofia.uni.fmi.mjt.api.objects.Nutrient;
 
-public class FoodDataClientTest {
+public class FoodDataAPIClientTest {
     private static double DELTA  = 0.000001;
    
     private static int OK = 200;
@@ -35,7 +35,7 @@ public class FoodDataClientTest {
     
     private static Gson gson = new Gson();
     
-    private FoodDataClient apiClient;
+    private FoodDataAPIClient apiClient;
     private HttpClient mockedClient;
     private HttpResponse<Object> mockedResponse;
     
@@ -43,7 +43,7 @@ public class FoodDataClientTest {
     public void initialize() {
         mockedClient = mock(HttpClient.class);
         mockedResponse = mock(HttpResponse.class);
-        apiClient = new FoodDataClient(mockedClient, apiKey);
+        apiClient = new FoodDataAPIClient(mockedClient, apiKey);
     }
     
     @Test

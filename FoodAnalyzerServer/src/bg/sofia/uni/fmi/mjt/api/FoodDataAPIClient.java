@@ -12,11 +12,12 @@ import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.Gson;
 
+import bg.sofia.uni.fmi.mjt.api.objects.BrandedFood;
 import bg.sofia.uni.fmi.mjt.api.objects.Food;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodDetails;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodSearchResponse;
 
-public class FoodDataClient {
+public class FoodDataAPIClient {
     private static String INVALID_FOOD_ID = "The entered food ID is invalid!";
     private static String FOOD_NOT_FOUND = "I could not find food with such name";
     
@@ -31,11 +32,11 @@ public class FoodDataClient {
     private HttpClient client;
     private String apiKey;
 
-    public FoodDataClient(HttpClient client, String apiKey) {
+    public FoodDataAPIClient(HttpClient client, String apiKey) {
         this.client = client;
         this.apiKey = apiKey;
     }
-
+    
     public List<Food> searchFood(String foodName) throws IOException, InterruptedException, NoMatchException {
         HttpRequest initialRequest = HttpRequest.newBuilder(getURI(foodName)).build();
         
@@ -51,15 +52,11 @@ public class FoodDataClient {
     }
     
     public FoodDetails getFoodDetails(long foodId) throws IOException, InterruptedException, InvalidFoodIdException {
-        HttpRequest request = HttpRequest.newBuilder(getURI(foodId)).build();
-
-        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-        
-        if (response.statusCode() == INTERNAL_SERVER_ERROR) {
-            throw new InvalidFoodIdException(INVALID_FOOD_ID);
-        }
-
-        return gson.fromJson(response.body(), FoodDetails.class);
+        return gson.fromJson(getFoodDetailsById(foodId), FoodDetails.class);
+    }
+    
+    public BrandedFood getBrandedFood(long brandedFoodId) throws InvalidFoodIdException, IOException, InterruptedException {
+        return gson.fromJson(getFoodDetailsById(brandedFoodId), BrandedFood.class);
     }
     
     private URI getURI(String foodName) {
@@ -114,6 +111,18 @@ public class FoodDataClient {
     
     private List<Food> getFoodsFromCurrentPage(String responseBody) {
         return gson.fromJson(responseBody, FoodSearchResponse.class).getFoods();
+    }
+    
+    private String getFoodDetailsById(long foodId) throws InvalidFoodIdException, IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder(getURI(foodId)).build();
+
+        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+        
+        if (response.statusCode() == INTERNAL_SERVER_ERROR) {
+            throw new InvalidFoodIdException(INVALID_FOOD_ID);
+        }
+        
+        return response.body();
     }
     
 }
