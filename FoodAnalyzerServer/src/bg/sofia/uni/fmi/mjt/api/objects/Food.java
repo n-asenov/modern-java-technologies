@@ -1,6 +1,10 @@
 package bg.sofia.uni.fmi.mjt.api.objects;
 
-public class Food {
+import java.io.Serializable;
+
+public class Food implements Serializable {
+    private static final long serialVersionUID = 478889938666476851L;
+
     private long fdcId;
     private String description;
     private String dataType;

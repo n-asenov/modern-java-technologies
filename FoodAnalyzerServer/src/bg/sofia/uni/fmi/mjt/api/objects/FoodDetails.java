@@ -1,14 +1,20 @@
 package bg.sofia.uni.fmi.mjt.api.objects;
 
-public class FoodDetails {
+import java.io.Serializable;
+
+public class FoodDetails implements Serializable {
+    private static final long serialVersionUID = -4001006994250353821L;
+
     private String description;
     private String ingredients;
     private LabelNutrients labelNutrients;
+    private long fdcId;
     
-    public FoodDetails(String description, String ingredients, LabelNutrients labelNutrients) {
+    public FoodDetails(String description, String ingredients, LabelNutrients labelNutrients, long fdcId) {
         this.description = description;
         this.ingredients = ingredients;
         this.labelNutrients = labelNutrients;
+        this.fdcId = fdcId;
     }
 
     public String getDescription() {
@@ -21,6 +27,10 @@ public class FoodDetails {
 
     public LabelNutrients getLabelNutrients() {
         return labelNutrients;
+    }
+    
+    public long getFdcId() {
+        return fdcId;
     }
     
     @Override

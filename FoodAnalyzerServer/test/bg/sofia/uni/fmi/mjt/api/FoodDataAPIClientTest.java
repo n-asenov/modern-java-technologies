@@ -52,7 +52,7 @@ public class FoodDataAPIClientTest {
         final double expectedValue = 6;
         Nutrient nutrient = new Nutrient(expectedValue);
         LabelNutrients labelNutrients = new LabelNutrients(nutrient, nutrient, nutrient, nutrient, nutrient);
-        FoodDetails expectedFoodDetails = new FoodDetails("Coconut", "coconut", labelNutrients);
+        FoodDetails expectedFoodDetails = new FoodDetails("Coconut", "coconut", labelNutrients, foodId);
         
         when(mockedClient.send(any(), any())).thenReturn(mockedResponse);
         when(mockedResponse.statusCode()).thenReturn(OK);
@@ -71,6 +71,7 @@ public class FoodDataAPIClientTest {
         assertEquals(expectedValue, actualfoodDetatils.getLabelNutrients().getCalories().getValue(), DELTA);
         assertEquals(expectedValue, actualfoodDetatils.getLabelNutrients().getFiber().getValue(), DELTA);
         assertEquals(expectedValue, actualfoodDetatils.getLabelNutrients().getProtein().getValue(), DELTA);
+        assertEquals(foodId, actualfoodDetatils.getFdcId());
     }
     
     @Test (expected = InvalidFoodIdException.class)
