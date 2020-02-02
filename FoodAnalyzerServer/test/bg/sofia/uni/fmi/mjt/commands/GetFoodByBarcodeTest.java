@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
+import bg.sofia.uni.fmi.mjt.api.NoMatchException;
 import bg.sofia.uni.fmi.mjt.api.objects.BrandedFood;
 import bg.sofia.uni.fmi.mjt.cache.ServerCache;
 import bg.sofia.uni.fmi.mjt.commands.exceptions.InternalServerProblemException;
@@ -29,7 +30,7 @@ public class GetFoodByBarcodeTest {
 
     @Test
     public void testExecuteWithCorrectBarcode() throws InvalidNumberOfArgumentsException,
-            InvalidFoodIdException, InternalServerProblemException {
+            InvalidFoodIdException, InternalServerProblemException, NoMatchException {
         BrandedFood food = new BrandedFood(1, "", "", "123");
         String barcode = food.getGtinUpc();
 
@@ -46,7 +47,7 @@ public class GetFoodByBarcodeTest {
 
     @Test
     public void testExecuteWithBarcodeWhichIsNotInCache() throws InvalidNumberOfArgumentsException,
-            InvalidFoodIdException, InternalServerProblemException {
+            InvalidFoodIdException, InternalServerProblemException, NoMatchException {
         BrandedFood food = new BrandedFood(1, "", "", "123");
         String barcode = food.getGtinUpc();
         String expectedResult = "There is no food with such barcode.";
@@ -63,7 +64,7 @@ public class GetFoodByBarcodeTest {
 
     @Test(expected = InvalidNumberOfArgumentsException.class)
     public void testExecuteWithInvalidNumberOfArguments() throws InvalidNumberOfArgumentsException,
-            InvalidFoodIdException, InternalServerProblemException {
+            InvalidFoodIdException, InternalServerProblemException, NoMatchException {
         command.execute(List.of());
     }
 

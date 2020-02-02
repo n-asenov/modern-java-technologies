@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
+import bg.sofia.uni.fmi.mjt.api.NoMatchException;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodDetails;
 import bg.sofia.uni.fmi.mjt.api.objects.LabelNutrients;
 import bg.sofia.uni.fmi.mjt.api.objects.Nutrient;
@@ -36,20 +37,20 @@ public class GetFoodReportByIdTest {
 
     @Test(expected = InvalidNumberOfArgumentsException.class)
     public void testExecuteWithInvalidNumberOfArguments() throws InvalidNumberOfArgumentsException,
-            InvalidFoodIdException, InternalServerProblemException {
+            InvalidFoodIdException, InternalServerProblemException, NoMatchException {
         command.execute(List.of());
     }
 
     @Test(expected = InvalidFoodIdException.class)
     public void testExecuteWithInvalidFoodId() throws InvalidNumberOfArgumentsException,
-            InvalidFoodIdException, InternalServerProblemException {
+            InvalidFoodIdException, InternalServerProblemException, NoMatchException {
         command.execute(List.of("test"));
     }
 
     @Test
     public void testExecuteWithFoodIdIncludedInServerCache()
             throws InvalidNumberOfArgumentsException, InvalidFoodIdException,
-            InternalServerProblemException, IOException, InterruptedException {
+            InternalServerProblemException, IOException, InterruptedException, NoMatchException {
         Nutrient nutrient = new Nutrient(1);
         LabelNutrients labelNutrients = new LabelNutrients(nutrient, nutrient, nutrient, nutrient,
                 nutrient);
@@ -71,7 +72,7 @@ public class GetFoodReportByIdTest {
     @Test
     public void testExecuteWithFoodIdNotIncludedInCache()
             throws IOException, InterruptedException, InvalidFoodIdException,
-            InvalidNumberOfArgumentsException, InternalServerProblemException {
+            InvalidNumberOfArgumentsException, InternalServerProblemException, NoMatchException {
         Nutrient nutrient = new Nutrient(1);
         LabelNutrients labelNutrients = new LabelNutrients(nutrient, nutrient, nutrient, nutrient,
                 nutrient);

@@ -19,7 +19,7 @@ import bg.sofia.uni.fmi.mjt.api.objects.FoodSearchResponse;
 
 public class FoodDataAPIClient {
     private static String INVALID_FOOD_ID = "The entered food ID is invalid!";
-    private static String FOOD_NOT_FOUND = "I could not find food with such name";
+    private static String FOOD_NOT_FOUND = "There is not food with such name";
     
     private static int NO_MATCH = 0;
     private static final int INTERNAL_SERVER_ERROR = 500;
