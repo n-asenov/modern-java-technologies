@@ -6,4 +6,8 @@ public class InvalidFoodIdException extends Exception {
     public InvalidFoodIdException(String message) {
         super(message);
     }
+    
+    public InvalidFoodIdException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

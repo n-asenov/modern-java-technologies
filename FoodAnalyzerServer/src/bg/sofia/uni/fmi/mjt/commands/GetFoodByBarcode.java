@@ -24,7 +24,7 @@ public class GetFoodByBarcode implements Command {
         if (serverCache.containsBrandedFood(barcode)) {
             return serverCache.getBrandedFood(barcode).toString();
         }
-        
+
         return INVALID_BARCODE;
     }
     
