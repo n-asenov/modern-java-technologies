@@ -37,12 +37,12 @@ public class ServerCache {
                 .anyMatch(foodName -> containsAllWords(foodName, foodNameWords));
     }
     
-    public boolean containsBrandedFood(String brandedFoodGtinUpc) {
-        return brandedFoods.containsKey(brandedFoodGtinUpc);
+    public boolean containsBrandedFood(String brandedFoodBarcode) {
+        return brandedFoods.containsKey(brandedFoodBarcode);
     }
     
-    public boolean containsFoodDetails(long foodFdcId) {
-        return foodsDetails.containsKey(foodFdcId);
+    public boolean containsFoodDetails(long foodId) {
+        return foodsDetails.containsKey(foodId);
     }
     
     public void saveFood(Food food) throws IOException {
@@ -66,12 +66,12 @@ public class ServerCache {
                 .collect(Collectors.toList());
     }
     
-    public BrandedFood getBrandedFood(String brandedFoodGtinUpc) {
-        return brandedFoods.get(brandedFoodGtinUpc);
+    public BrandedFood getBrandedFood(String brandedFoodBarcode) {
+        return brandedFoods.get(brandedFoodBarcode);
     }
     
-    public FoodDetails getFoodDetails(long foodFdcId) {
-        return foodsDetails.get(foodFdcId);
+    public FoodDetails getFoodDetails(long foodId) {
+        return foodsDetails.get(foodId);
     }
     
     private boolean containsAllWords(String foodName, List<String> words) {
