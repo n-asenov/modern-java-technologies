@@ -80,3 +80,7 @@ FoodAnalyzerServer/.classpath
 FoodAnalyzerServer/.project
 FoodAnalyzerServer/bin/
 FoodAnalyzerServer/.settings/
+FoodAnalyzerClient/.classpath
+FoodAnalyzerClient/.project
+FoodAnalyzerClient/bin/
+FoodAnalyzerClient/.settings/
