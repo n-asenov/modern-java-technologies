@@ -26,4 +26,14 @@ public class Food implements Serializable {
     public String getDataType() {
         return dataType;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder foodString = new StringBuilder();
+        
+        foodString.append("Food ID: ").append(fdcId).append(System.lineSeparator())
+            .append("Description: ").append(description);
+        
+        return foodString.toString();
+    }
 }
