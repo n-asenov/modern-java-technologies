@@ -6,20 +6,16 @@ import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import bg.sofia.uni.fmi.mjt.api.objects.Food;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodDetails;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodSearchResponse;
 import bg.sofia.uni.fmi.mjt.api.objects.LabelNutrients;
