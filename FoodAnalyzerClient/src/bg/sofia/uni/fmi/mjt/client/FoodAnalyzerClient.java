@@ -7,8 +7,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.Channels;
 import java.nio.channels.SocketChannel;
 
+import bg.sofia.uni.fmi.mjt.client.request.ClientRequestHandler;
 import bg.sofia.uni.fmi.mjt.client.response.ServerResponseHandler;
-import bg.sofia.uni.mjt.client.request.ClientRequestHandler;
 
 public class FoodAnalyzerClient {
     private static final String SERVER_NAME = "localhost";
