@@ -1,4 +1,4 @@
-package bg.sofia.uni.mjt.input.parser;
+package bg.sofia.uni.fmi.mjt.input.parser;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import bg.sofia.uni.fmi.mjt.input.parser.InputParser;
 
 public class InputParserTest {
 

@@ -1,4 +1,4 @@
-package bg.sofia.uni.mjt.reader;
+package bg.sofia.uni.fmi.mjt.reader;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

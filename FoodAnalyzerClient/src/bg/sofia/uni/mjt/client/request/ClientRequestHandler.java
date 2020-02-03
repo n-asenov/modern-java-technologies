@@ -8,9 +8,9 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.List;
 
-import bg.sofia.uni.mjt.input.parser.InputParser;
-import bg.sofia.uni.mjt.reader.BarcodeReader;
-import bg.sofia.uni.mjt.reader.InvalidBarcodeImageException;
+import bg.sofia.uni.fmi.mjt.input.parser.InputParser;
+import bg.sofia.uni.fmi.mjt.reader.BarcodeReader;
+import bg.sofia.uni.fmi.mjt.reader.InvalidBarcodeImageException;
 
 public class ClientRequestHandler implements Runnable {
     private InputStream input;

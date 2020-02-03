@@ -1,4 +1,4 @@
-package bg.sofia.uni.mjt.input.parser;
+package bg.sofia.uni.fmi.mjt.input.parser;
 
 import java.util.List;
 import java.util.stream.Collectors;

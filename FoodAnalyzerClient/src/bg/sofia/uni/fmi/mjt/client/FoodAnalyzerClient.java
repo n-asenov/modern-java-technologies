@@ -1,4 +1,4 @@
-package bg.sofia.uni.mjt.client;
+package bg.sofia.uni.fmi.mjt.client;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,8 +7,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.Channels;
 import java.nio.channels.SocketChannel;
 
+import bg.sofia.uni.fmi.mjt.client.response.ServerResponseHandler;
 import bg.sofia.uni.mjt.client.request.ClientRequestHandler;
-import bg.sofia.uni.mjt.client.response.ServerResponseHandler;
 
 public class FoodAnalyzerClient {
     private static final String SERVER_NAME = "localhost";
@@ -35,7 +35,6 @@ public class FoodAnalyzerClient {
 
             client.run();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

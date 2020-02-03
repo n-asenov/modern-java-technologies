@@ -1,4 +1,4 @@
-package bg.sofia.uni.mjt.reader;
+package bg.sofia.uni.fmi.mjt.reader;
 
 public class InvalidBarcodeImageException extends Exception {
     private static final long serialVersionUID = 807157296490909564L;
