@@ -1,6 +1,10 @@
 package bg.sofia.uni.fmi.mjt.api.objects;
 
-public class LabelNutrients {
+import java.io.Serializable;
+
+public class LabelNutrients implements Serializable {
+    private static final long serialVersionUID = 473296686332778483L;
+
     private Nutrient fat;
     private Nutrient carbohydrates;
     private Nutrient fiber;
