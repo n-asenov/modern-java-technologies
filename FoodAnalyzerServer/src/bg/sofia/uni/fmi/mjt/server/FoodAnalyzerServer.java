@@ -56,25 +56,25 @@ public class FoodAnalyzerServer {
         final String apiKey = "YOUR_API_KEY_HERE";
 
         try {
-        File foodStorageFile = new File("foodStorage");
-        foodStorageFile.createNewFile();
-        File brandedFoodStorageFile = new File("brandedFoodStorage");
-        brandedFoodStorageFile.createNewFile();
-        File foodDetailsStorageFile = new File("foodDetailsStorage");
-        foodDetailsStorageFile.createNewFile();
+            File foodStorageFile = new File("foodStorage");
+            foodStorageFile.createNewFile();
+            File brandedFoodStorageFile = new File("brandedFoodStorage");
+            brandedFoodStorageFile.createNewFile();
+            File foodDetailsStorageFile = new File("foodDetailsStorage");
+            foodDetailsStorageFile.createNewFile();
 
-        FoodStorage foodStorage = new FoodStorage(new FileInputStream(foodStorageFile),
-                new FileOutputStream(foodStorageFile));
-        BrandedFoodStorage brandedFoodStorage = new BrandedFoodStorage(
-                new FileInputStream(brandedFoodStorageFile),
-                new FileOutputStream(brandedFoodStorageFile));
-        FoodDetailsStorage foodDetailsStorage = new FoodDetailsStorage(
-                new FileInputStream(foodDetailsStorageFile),
-                new FileOutputStream(foodDetailsStorageFile));
+            FoodStorage foodStorage = new FoodStorage(new FileInputStream(foodStorageFile),
+                    new FileOutputStream(foodStorageFile));
+            BrandedFoodStorage brandedFoodStorage = new BrandedFoodStorage(
+                    new FileInputStream(brandedFoodStorageFile),
+                    new FileOutputStream(brandedFoodStorageFile));
+            FoodDetailsStorage foodDetailsStorage = new FoodDetailsStorage(
+                    new FileInputStream(foodDetailsStorageFile),
+                    new FileOutputStream(foodDetailsStorageFile));
 
-        FoodAnalyzerServer server = new FoodAnalyzerServer(apiKey, foodStorage, brandedFoodStorage,
-                foodDetailsStorage);
-        server.run();
+            FoodAnalyzerServer server = new FoodAnalyzerServer(apiKey, foodStorage,
+                    brandedFoodStorage, foodDetailsStorage);
+            server.run();
         } catch (IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -145,9 +145,11 @@ public class FoodAnalyzerServer {
                 inputBuffer.clear();
                 readBytes = client.read(inputBuffer);
                 inputBuffer.flip();
-                byte[] cmd = new byte[readBytes];
-                inputBuffer.get(cmd);
-                command.append(new String(cmd));
+                if (readBytes > MORE_BYTES_TO_READ) {
+                    byte[] cmd = new byte[readBytes];
+                    inputBuffer.get(cmd);
+                    command.append(new String(cmd));
+                }
             }
         } catch (IOException e) {
             System.out.println("Couldn't get client request");
@@ -180,8 +182,11 @@ public class FoodAnalyzerServer {
         try {
             client.write(response);
         } catch (IOException e) {
-            System.out.println("Couldn't send response to client");
-            e.printStackTrace();
+            try {
+                client.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

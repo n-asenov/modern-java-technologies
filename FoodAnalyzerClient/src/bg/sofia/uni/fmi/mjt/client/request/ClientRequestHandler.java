@@ -38,7 +38,7 @@ public class ClientRequestHandler implements Runnable {
                     String serverRequestMessage = getServerRequestMessage(clientRequest);
                     writer.println(serverRequestMessage);
                 } catch (InvalidBarcodeImageException e) {
-                    System.out.println("The entered image barcode is invalid");
+                    System.out.println(e.getMessage());
                 }
             }
         } catch (IOException e) {
