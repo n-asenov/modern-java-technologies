@@ -31,22 +31,21 @@ public class ClientRequestHandler implements Runnable {
                 var writer = new PrintWriter(output, true)) {
             while (true) {
                 String clientRequest = reader.readLine();
-                
+
                 try {
                     String serverRequestMessage = getServerRequestMessage(clientRequest);
                     writer.println(serverRequestMessage);
                 } catch (InvalidBarcodeImageException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    System.out.println("The entered image barcode is invalid");
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-        } 
+        }
     }
 
-    private String getServerRequestMessage(String clientRequest) throws InvalidBarcodeImageException {
+    private String getServerRequestMessage(String clientRequest)
+            throws InvalidBarcodeImageException {
         final String barcodeCommand = "get-food-by-barcode";
         String clientCommand = inputParser.getCommand(clientRequest);
 
@@ -72,10 +71,11 @@ public class ClientRequestHandler implements Runnable {
 
         return getBarcodeByImageOption(arguments);
     }
-    
-    private String getBarcodeByImageOption(List<String> arguments) throws InvalidBarcodeImageException {
+
+    private String getBarcodeByImageOption(List<String> arguments)
+            throws InvalidBarcodeImageException {
         String imageOption = "--img=";
-        
+
         for (String argument : arguments) {
             int imageOptionIndex = argument.indexOf(imageOption);
 
@@ -85,7 +85,7 @@ public class ClientRequestHandler implements Runnable {
                 return barcodeReader.decodeBarcode(fileName);
             }
         }
-        
+
         throw new InvalidBarcodeImageException("No barcode image provided");
     }
 

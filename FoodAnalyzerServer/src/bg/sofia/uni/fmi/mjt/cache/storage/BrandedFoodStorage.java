@@ -15,11 +15,12 @@ public class BrandedFoodStorage extends Storage {
     public BrandedFoodStorage(InputStream input, OutputStream output) throws IOException {
         super(input, output);
     }
-    
-    public Map<String, BrandedFood> loadBrandedFoodData() throws ClassNotFoundException, IOException {
+
+    public Map<String, BrandedFood> loadBrandedFoodData()
+            throws ClassNotFoundException, IOException {
         Map<String, BrandedFood> brandedFoods = new HashMap<>();
         ObjectInputStream input = super.getInput();
-        
+
         try {
             while (true) {
                 BrandedFood currentBrandedFood = (BrandedFood) input.readObject();
@@ -27,9 +28,9 @@ public class BrandedFoodStorage extends Storage {
             }
         } catch (EOFException e) {
             input.close();
-            
+
             return brandedFoods;
         }
     }
-    
+
 }

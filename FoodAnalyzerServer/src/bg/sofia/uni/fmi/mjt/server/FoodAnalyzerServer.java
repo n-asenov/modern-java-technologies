@@ -14,7 +14,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
-import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
+import bg.sofia.uni.fmi.mjt.api.FoodDataApiClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
 import bg.sofia.uni.fmi.mjt.api.NoMatchException;
 import bg.sofia.uni.fmi.mjt.cache.ServerCache;
@@ -37,7 +37,7 @@ public class FoodAnalyzerServer {
     private static int MORE_BYTES_TO_READ = 0;
 
     private ServerCache serverCache;
-    private FoodDataAPIClient apiClient;
+    private FoodDataApiClient apiClient;
     private CommandFactory commandFactory;
     private ClientMessageParser parser;
     private ByteBuffer inputBuffer;
@@ -46,15 +46,16 @@ public class FoodAnalyzerServer {
             BrandedFoodStorage brandedFoodStorage, FoodDetailsStorage foodDetailsStorage)
             throws ClassNotFoundException, IOException {
         serverCache = new ServerCache(foodStorage, brandedFoodStorage, foodDetailsStorage);
-        apiClient = new FoodDataAPIClient(HttpClient.newHttpClient(), apiKey);
+        apiClient = new FoodDataApiClient(HttpClient.newHttpClient(), apiKey);
         commandFactory = new CommandFactory(serverCache, apiClient);
         parser = new ClientMessageParser();
         inputBuffer = ByteBuffer.allocate(BUFFER_SIZE);
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        String apiKey = "YOUR_API_KEY_HERE";
+    public static void main(String[] args) {
+        final String apiKey = "YOUR_API_KEY_HERE";
 
+        try {
         File foodStorageFile = new File("foodStorage");
         foodStorageFile.createNewFile();
         File brandedFoodStorageFile = new File("brandedFoodStorage");
@@ -71,8 +72,16 @@ public class FoodAnalyzerServer {
                 new FileInputStream(foodDetailsStorageFile),
                 new FileOutputStream(foodDetailsStorageFile));
 
-        FoodAnalyzerServer server = new FoodAnalyzerServer(apiKey, foodStorage, brandedFoodStorage, foodDetailsStorage);
+        FoodAnalyzerServer server = new FoodAnalyzerServer(apiKey, foodStorage, brandedFoodStorage,
+                foodDetailsStorage);
         server.run();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Can not initialize server cache");
+            e.printStackTrace();
+        }
     }
 
     public void run() {
@@ -107,13 +116,10 @@ public class FoodAnalyzerServer {
             SelectionKey key = keyIterator.next();
 
             if (key.isReadable()) {
-                System.out.println("new request");
                 SocketChannel client = (SocketChannel) key.channel();
                 String clientRequest = getRequestFromClient(client);
-                System.out.println(clientRequest);
                 String response = handleClientRequest(clientRequest);
                 sendResponse(client, response);
-                System.out.println("request handled");
             } else if (key.isAcceptable()) {
                 ServerSocketChannel sockChannel = (ServerSocketChannel) key.channel();
                 try {

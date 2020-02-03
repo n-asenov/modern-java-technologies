@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClientTest;
+import bg.sofia.uni.fmi.mjt.api.FoodDataApiClientTest;
 import bg.sofia.uni.fmi.mjt.cache.ServerCacheTest;
 import bg.sofia.uni.fmi.mjt.cache.storage.BrandedFoodStorageTest;
 import bg.sofia.uni.fmi.mjt.cache.storage.FoodDetailsStorageTest;
@@ -16,7 +16,7 @@ import bg.sofia.uni.fmi.mjt.parser.ClientMessageParserTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    FoodDataAPIClientTest.class,
+    FoodDataApiClientTest.class,
     ServerCacheTest.class,
     BrandedFoodStorageTest.class,
     FoodDetailsStorageTest.class,

@@ -1,7 +1,6 @@
 package bg.sofia.uni.fmi.mjt.commands;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -13,7 +12,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
+import bg.sofia.uni.fmi.mjt.api.FoodDataApiClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
 import bg.sofia.uni.fmi.mjt.api.NoMatchException;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodDetails;
@@ -26,12 +25,12 @@ import bg.sofia.uni.fmi.mjt.commands.exceptions.InvalidNumberOfArgumentsExceptio
 public class GetFoodReportByIdTest {
     private Command command;
     private ServerCache serverCache;
-    private FoodDataAPIClient apiClient;
+    private FoodDataApiClient apiClient;
 
     @Before
     public void initialize() {
         serverCache = mock(ServerCache.class);
-        apiClient = mock(FoodDataAPIClient.class);
+        apiClient = mock(FoodDataApiClient.class);
         command = new GetFoodReportById(serverCache, apiClient);
     }
 
@@ -60,7 +59,7 @@ public class GetFoodReportByIdTest {
         when(serverCache.containsFoodDetails(foodId)).thenReturn(true);
         when(serverCache.getFoodDetails(foodId)).thenReturn(foodDetails);
 
-        String result = command.execute(List.of("1"));
+        final String result = command.execute(List.of("1"));
 
         verify(serverCache).containsFoodDetails(foodId);
         verify(serverCache).getFoodDetails(foodId);
@@ -82,7 +81,7 @@ public class GetFoodReportByIdTest {
         when(serverCache.containsFoodDetails(foodId)).thenReturn(false);
         when(apiClient.getFoodDetails(foodId)).thenReturn(foodDetails);
 
-        String result = command.execute(List.of("1"));
+        final String result = command.execute(List.of("1"));
         
         verify(serverCache).containsFoodDetails(foodId);
         verify(serverCache, never()).getFoodDetails(foodId);

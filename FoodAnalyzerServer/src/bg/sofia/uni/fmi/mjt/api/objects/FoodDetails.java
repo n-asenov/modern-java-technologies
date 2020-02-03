@@ -9,8 +9,9 @@ public class FoodDetails implements Serializable {
     private String ingredients;
     private LabelNutrients labelNutrients;
     private long fdcId;
-    
-    public FoodDetails(String description, String ingredients, LabelNutrients labelNutrients, long fdcId) {
+
+    public FoodDetails(String description, String ingredients, LabelNutrients labelNutrients,
+            long fdcId) {
         this.description = description;
         this.ingredients = ingredients;
         this.labelNutrients = labelNutrients;
@@ -28,20 +29,19 @@ public class FoodDetails implements Serializable {
     public LabelNutrients getLabelNutrients() {
         return labelNutrients;
     }
-    
+
     public long getFdcId() {
         return fdcId;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
         String newLine = System.lineSeparator();
-        
-        string.append("Name: ").append(description).append(newLine)
-            .append("Ingredients: ").append(ingredients).append(newLine)
-            .append(labelNutrients.toString());
-        
+
+        string.append("Name: ").append(description).append(newLine).append("Ingredients: ")
+                .append(ingredients).append(newLine).append(labelNutrients.toString());
+
         return string.toString();
     }
 }

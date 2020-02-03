@@ -78,7 +78,7 @@ public class ServerCacheTest {
 
         assertTrue(result);
     }
-    
+
     @Test
     public void testSaveFoodWithFoodObject() throws ClassNotFoundException, IOException {
         Food food = new Food(1, "test", "test");
@@ -87,54 +87,55 @@ public class ServerCacheTest {
 
         serverCache = new ServerCache(foodStorage, brandedFoodStorage, foodDetailsStorage);
         serverCache.saveFood(food);
-        
+
         verify(foodStorage).saveObjectData(food);
-        
+
         assertTrue(serverCache.containsFood(List.of(food.getDescription())));
     }
 
     @Test
-    public void testSaveBrandedFoodWithBrandedFoodObject() throws ClassNotFoundException, IOException {
+    public void testSaveBrandedFoodWithBrandedFoodObject()
+            throws ClassNotFoundException, IOException {
         BrandedFood food = new BrandedFood(1, "", "", "1");
-        
+
         when(brandedFoodStorage.loadBrandedFoodData()).thenReturn(new HashMap<>());
-    
+
         serverCache = new ServerCache(foodStorage, brandedFoodStorage, foodDetailsStorage);
         serverCache.saveBrandedFood(food);
-        
+
         verify(brandedFoodStorage).saveObjectData(food);
-        
+
         assertTrue(serverCache.containsBrandedFood(food.getGtinUpc()));
     }
-    
+
     @Test
-    public void testSaveFoodDetailsWithFoodDetailsObject() throws ClassNotFoundException, IOException {
+    public void testSaveFoodDetailsWithFoodDetailsObject()
+            throws ClassNotFoundException, IOException {
         FoodDetails foodDetails = new FoodDetails("", "", null, 1);
-        
+
         when(foodDetailsStorage.loadFoodDetailsData()).thenReturn(new HashMap<>());
-    
+
         serverCache = new ServerCache(foodStorage, brandedFoodStorage, foodDetailsStorage);
         serverCache.saveFoodDetails(foodDetails);
-        
+
         verify(foodDetailsStorage).saveObjectData(foodDetails);
-        
+
         assertTrue(serverCache.containsFoodDetails(foodDetails.getFdcId()));
     }
-    
+
     @Test
     public void testGetFoodWithSimpleFoodName() throws ClassNotFoundException, IOException {
         Food firstFood = new Food(1, "raffaello", "");
         Food secondFood = new Food(2, "trat", "");
-        
+
         when(foodStorage.loadFoodData()).thenReturn(Set.of(firstFood, secondFood));
-        
+
         serverCache = new ServerCache(foodStorage, brandedFoodStorage, foodDetailsStorage);
-        
+
         List<Food> result = serverCache.getFood(List.of("raffaello"));
-        
+
         assertEquals(1, result.size());
         assertEquals(firstFood.getFdcId(), result.get(0).getFdcId());
     }
-    
-    
+
 }

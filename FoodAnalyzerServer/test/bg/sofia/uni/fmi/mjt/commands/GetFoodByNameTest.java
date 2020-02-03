@@ -13,7 +13,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
+import bg.sofia.uni.fmi.mjt.api.FoodDataApiClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
 import bg.sofia.uni.fmi.mjt.api.NoMatchException;
 import bg.sofia.uni.fmi.mjt.api.objects.BrandedFood;
@@ -25,12 +25,12 @@ import bg.sofia.uni.fmi.mjt.commands.exceptions.InvalidNumberOfArgumentsExceptio
 public class GetFoodByNameTest {
     private Command command;
     private ServerCache serverCache;
-    private FoodDataAPIClient apiClient;
+    private FoodDataApiClient apiClient;
 
     @Before
     public void initialize() {
         serverCache = mock(ServerCache.class);
-        apiClient = mock(FoodDataAPIClient.class);
+        apiClient = mock(FoodDataApiClient.class);
         command = new GetFoodByName(serverCache, apiClient);
     }
 
@@ -51,7 +51,7 @@ public class GetFoodByNameTest {
         when(serverCache.containsFood(arguments)).thenReturn(true);
         when(serverCache.getFood(arguments)).thenReturn(List.of(food));
 
-        String result = command.execute(arguments);
+        final String result = command.execute(arguments);
 
         verify(serverCache).containsFood(arguments);
         verify(serverCache).getFood(arguments);
@@ -72,7 +72,7 @@ public class GetFoodByNameTest {
         when(serverCache.containsFood(arguments)).thenReturn(false);
         when(apiClient.searchFood(foodName)).thenReturn(List.of(food));
 
-        String result = command.execute(arguments);
+        final String result = command.execute(arguments);
 
         verify(serverCache).containsFood(arguments);
         verify(serverCache, never()).getFood(arguments);
@@ -80,12 +80,14 @@ public class GetFoodByNameTest {
         verify(serverCache, never()).saveBrandedFood(any());
         verify(apiClient).searchFood(foodName);
         verify(apiClient, never()).getBrandedFood(food.getFdcId());
-    
+
         assertEquals(food.toString(), result);
     }
-    
+
     @Test
-    public void testExecuteWithBrandedFoodWhichIsNotInCache() throws IOException, InterruptedException, NoMatchException, InvalidFoodIdException, InvalidNumberOfArgumentsException, InternalServerProblemException {
+    public void testExecuteWithBrandedFoodWhichIsNotInCache()
+            throws IOException, InterruptedException, NoMatchException, InvalidFoodIdException,
+            InvalidNumberOfArgumentsException, InternalServerProblemException {
         Food food = new Food(1, "test", new String("Branded"));
         BrandedFood brandedFood = new BrandedFood(1, "", "Branded", "1");
         String foodName = food.getDescription();
@@ -94,8 +96,8 @@ public class GetFoodByNameTest {
         when(serverCache.containsFood(arguments)).thenReturn(false);
         when(apiClient.searchFood(foodName)).thenReturn(List.of(food));
         when(apiClient.getBrandedFood(food.getFdcId())).thenReturn(brandedFood);
-       
-        String result = command.execute(arguments);
+
+        final String result = command.execute(arguments);
 
         verify(serverCache).containsFood(arguments);
         verify(serverCache, never()).getFood(arguments);
@@ -103,7 +105,7 @@ public class GetFoodByNameTest {
         verify(serverCache).saveBrandedFood(brandedFood);
         verify(apiClient).searchFood(foodName);
         verify(apiClient).getBrandedFood(food.getFdcId());
-    
+
         assertEquals(food.toString(), result);
     }
 

@@ -3,7 +3,7 @@ package bg.sofia.uni.fmi.mjt.commands;
 import java.io.IOException;
 import java.util.List;
 
-import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
+import bg.sofia.uni.fmi.mjt.api.FoodDataApiClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
 import bg.sofia.uni.fmi.mjt.api.NoMatchException;
 import bg.sofia.uni.fmi.mjt.api.objects.Food;
@@ -13,9 +13,9 @@ import bg.sofia.uni.fmi.mjt.commands.exceptions.InvalidNumberOfArgumentsExceptio
 
 public class GetFoodByName implements Command {
     private ServerCache serverCache;
-    private FoodDataAPIClient apiClient;
+    private FoodDataApiClient apiClient;
 
-    public GetFoodByName(ServerCache serverCache, FoodDataAPIClient apiClient) {
+    public GetFoodByName(ServerCache serverCache, FoodDataApiClient apiClient) {
         this.serverCache = serverCache;
         this.apiClient = apiClient;
     }

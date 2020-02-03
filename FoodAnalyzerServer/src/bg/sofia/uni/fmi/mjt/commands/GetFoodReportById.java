@@ -3,7 +3,7 @@ package bg.sofia.uni.fmi.mjt.commands;
 import java.io.IOException;
 import java.util.List;
 
-import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
+import bg.sofia.uni.fmi.mjt.api.FoodDataApiClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
 import bg.sofia.uni.fmi.mjt.api.objects.FoodDetails;
 import bg.sofia.uni.fmi.mjt.cache.ServerCache;
@@ -12,9 +12,9 @@ import bg.sofia.uni.fmi.mjt.commands.exceptions.InvalidNumberOfArgumentsExceptio
 
 public class GetFoodReportById implements Command {
     private ServerCache serverCache;
-    private FoodDataAPIClient apiClient;
+    private FoodDataApiClient apiClient;
 
-    public GetFoodReportById(ServerCache serverCache, FoodDataAPIClient apiClient) {
+    public GetFoodReportById(ServerCache serverCache, FoodDataApiClient apiClient) {
         this.serverCache = serverCache;
         this.apiClient = apiClient;
     }
@@ -30,11 +30,11 @@ public class GetFoodReportById implements Command {
         if (serverCache.containsFoodDetails(foodId)) {
             return serverCache.getFoodDetails(foodId).toString();
         }
-        
+
         FoodDetails foodDetails = makeApiRequest(foodId);
-        
+
         saveFoodDetailsInServerCache(foodDetails);
-        
+
         return foodDetails.toString();
     }
 
@@ -53,7 +53,7 @@ public class GetFoodReportById implements Command {
             return Long.parseLong(argument);
         } catch (NumberFormatException e) {
             String message = "Food ID must be a number.";
-            
+
             throw new InvalidFoodIdException(message, e);
         }
     }
@@ -68,8 +68,9 @@ public class GetFoodReportById implements Command {
             throw new InternalServerProblemException(message, e);
         }
     }
-    
-    private void saveFoodDetailsInServerCache(FoodDetails foodDetails) throws InternalServerProblemException {
+
+    private void saveFoodDetailsInServerCache(FoodDetails foodDetails)
+            throws InternalServerProblemException {
         try {
             serverCache.saveFoodDetails(foodDetails);
         } catch (IOException e) {
@@ -78,5 +79,5 @@ public class GetFoodReportById implements Command {
             throw new InternalServerProblemException(message, e);
         }
     }
-    
+
 }

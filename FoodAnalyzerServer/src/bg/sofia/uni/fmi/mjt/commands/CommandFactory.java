@@ -3,14 +3,14 @@ package bg.sofia.uni.fmi.mjt.commands;
 import java.util.HashMap;
 import java.util.Map;
 
-import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
+import bg.sofia.uni.fmi.mjt.api.FoodDataApiClient;
 import bg.sofia.uni.fmi.mjt.cache.ServerCache;
 import bg.sofia.uni.fmi.mjt.commands.exceptions.InvalidCommandException;
 
 public class CommandFactory {
     private Map<String, Command> commands;
     
-    public CommandFactory(ServerCache serverCache, FoodDataAPIClient apiClient) {
+    public CommandFactory(ServerCache serverCache, FoodDataApiClient apiClient) {
         commands = new HashMap<>();
         commands.put("get-food", new GetFoodByName(serverCache, apiClient));
         commands.put("get-food-report", new GetFoodReportById(serverCache, apiClient));

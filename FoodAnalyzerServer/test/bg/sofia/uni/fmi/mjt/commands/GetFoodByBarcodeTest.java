@@ -50,7 +50,7 @@ public class GetFoodByBarcodeTest {
             InvalidFoodIdException, InternalServerProblemException, NoMatchException {
         BrandedFood food = new BrandedFood(1, "", "", "123");
         String barcode = food.getGtinUpc();
-        String expectedResult = "There is no food with such barcode.";
+        final String expectedResult = "There is no food with such barcode.";
 
         when(serverCache.containsBrandedFood(barcode)).thenReturn(false);
 

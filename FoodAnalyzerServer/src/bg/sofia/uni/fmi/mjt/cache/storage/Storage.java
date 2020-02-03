@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-public abstract class Storage {
+public abstract class Storage  {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     

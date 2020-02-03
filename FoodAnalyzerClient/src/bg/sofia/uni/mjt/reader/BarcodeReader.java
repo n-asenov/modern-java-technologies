@@ -16,23 +16,23 @@ import com.google.zxing.common.HybridBinarizer;
 
 public class BarcodeReader {
     private static final String FILE_IS_NOT_AN_IMAGE = "The given file is not a image file.";
-    
+
     private MultiFormatReader decoder;
-    
+
     public BarcodeReader() {
         decoder = new MultiFormatReader();
     }
-    
+
     public String decodeBarcode(String fileName) throws InvalidBarcodeImageException {
         File file = new File(fileName);
         validateFile(file);
-        
+
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
             valideteBufferedImage(bufferedImage);
             LuminanceSource sourse = new BufferedImageLuminanceSource(bufferedImage);
             BinaryBitmap bitmapImage = new BinaryBitmap(new HybridBinarizer(sourse));
-            
+
             Result result = decoder.decode(bitmapImage);
             return result.getText();
         } catch (NotFoundException e) {
@@ -41,17 +41,18 @@ public class BarcodeReader {
             throw new InvalidBarcodeImageException("Could not open the image file", e);
         }
     }
-    
+
     private void validateFile(File file) throws InvalidBarcodeImageException {
         if (!file.isFile()) {
             throw new InvalidBarcodeImageException(FILE_IS_NOT_AN_IMAGE);
         }
     }
-    
-    private void valideteBufferedImage(BufferedImage bufferedImage) throws InvalidBarcodeImageException {
+
+    private void valideteBufferedImage(BufferedImage bufferedImage)
+            throws InvalidBarcodeImageException {
         if (bufferedImage == null) {
             throw new InvalidBarcodeImageException(FILE_IS_NOT_AN_IMAGE);
         }
     }
-    
+
 }

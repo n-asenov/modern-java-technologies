@@ -10,8 +10,9 @@ public class LabelNutrients implements Serializable {
     private Nutrient fiber;
     private Nutrient protein;
     private Nutrient calories;
-    
-    public LabelNutrients(Nutrient fat, Nutrient carbohydrates, Nutrient fiber, Nutrient protein, Nutrient calories ) {
+
+    public LabelNutrients(Nutrient fat, Nutrient carbohydrates, Nutrient fiber, Nutrient protein,
+            Nutrient calories) {
         this.fat = fat;
         this.carbohydrates = carbohydrates;
         this.fiber = fiber;
@@ -38,18 +39,17 @@ public class LabelNutrients implements Serializable {
     public Nutrient getCalories() {
         return calories;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
         String newLine = System.lineSeparator();
-        
-        string.append("Calories: ").append(calories.getValue()).append(newLine)
-            .append("Protein: ").append(protein.getValue()).append(newLine)
-            .append("Fat: ").append(fat.getValue()).append(newLine)
-            .append("Carbohydrates: ").append(carbohydrates.getValue()).append(newLine)
-            .append("Fiber: ").append(fiber.getValue()).append(newLine);
-        
+
+        string.append("Calories: ").append(calories.getValue()).append(newLine).append("Protein: ")
+                .append(protein.getValue()).append(newLine).append("Fat: ").append(fat.getValue())
+                .append(newLine).append("Carbohydrates: ").append(carbohydrates.getValue())
+                .append(newLine).append("Fiber: ").append(fiber.getValue());
+
         return string.toString();
     }
 }
