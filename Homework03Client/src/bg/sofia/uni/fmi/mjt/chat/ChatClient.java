@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.nio.channels.Channels;
 import java.nio.channels.SocketChannel;
-import java.util.Scanner;
 
 public class ChatClient {
     private static final String SERVER_NAME = "localhost";
