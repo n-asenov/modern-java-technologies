@@ -93,7 +93,7 @@ public class GetFoodByName implements Command {
             for (Food food : foods) {
                 serverCache.saveFood(food);
 
-                if (food.getDataType() == branded) {
+                if (food.getDataType().equals(branded)) {
                     serverCache.saveBrandedFood(apiClient.getBrandedFood(food.getFdcId()));
                 }
             }

@@ -16,6 +16,7 @@ import org.junit.Test;
 import bg.sofia.uni.fmi.mjt.api.FoodDataAPIClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
 import bg.sofia.uni.fmi.mjt.api.NoMatchException;
+import bg.sofia.uni.fmi.mjt.api.objects.BrandedFood;
 import bg.sofia.uni.fmi.mjt.api.objects.Food;
 import bg.sofia.uni.fmi.mjt.cache.ServerCache;
 import bg.sofia.uni.fmi.mjt.commands.exceptions.InternalServerProblemException;
@@ -85,19 +86,21 @@ public class GetFoodByNameTest {
     
     @Test
     public void testExecuteWithBrandedFoodWhichIsNotInCache() throws IOException, InterruptedException, NoMatchException, InvalidFoodIdException, InvalidNumberOfArgumentsException, InternalServerProblemException {
-        Food food = new Food(1, "test", "Branded");
+        Food food = new Food(1, "test", new String("Branded"));
+        BrandedFood brandedFood = new BrandedFood(1, "", "Branded", "1");
         String foodName = food.getDescription();
         List<String> arguments = List.of(foodName);
 
         when(serverCache.containsFood(arguments)).thenReturn(false);
         when(apiClient.searchFood(foodName)).thenReturn(List.of(food));
-
+        when(apiClient.getBrandedFood(food.getFdcId())).thenReturn(brandedFood);
+       
         String result = command.execute(arguments);
 
         verify(serverCache).containsFood(arguments);
         verify(serverCache, never()).getFood(arguments);
         verify(serverCache).saveFood(food);
-        verify(serverCache).saveBrandedFood(any());
+        verify(serverCache).saveBrandedFood(brandedFood);
         verify(apiClient).searchFood(foodName);
         verify(apiClient).getBrandedFood(food.getFdcId());
     
