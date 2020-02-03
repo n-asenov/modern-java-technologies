@@ -34,7 +34,7 @@ public class FoodAnalyzerServer {
 
     private static final int SLEEP_MILLIS = 500;
     private static int BUFFER_SIZE = 1024;
-    private static int END_OF_STREAM = -1;
+    private static int MORE_BYTES_TO_READ = 0;
 
     private ServerCache serverCache;
     private FoodDataAPIClient apiClient;
@@ -52,8 +52,27 @@ public class FoodAnalyzerServer {
         inputBuffer = ByteBuffer.allocate(BUFFER_SIZE);
     }
 
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        String apiKey = "YOUR_API_KEY_HERE";
+
+        File foodStorageFile = new File("foodStorage");
+        foodStorageFile.createNewFile();
+        File brandedFoodStorageFile = new File("brandedFoodStorage");
+        brandedFoodStorageFile.createNewFile();
+        File foodDetailsStorageFile = new File("foodDetailsStorage");
+        foodDetailsStorageFile.createNewFile();
+
+        FoodStorage foodStorage = new FoodStorage(new FileInputStream(foodStorageFile),
+                new FileOutputStream(foodStorageFile));
+        BrandedFoodStorage brandedFoodStorage = new BrandedFoodStorage(
+                new FileInputStream(brandedFoodStorageFile),
+                new FileOutputStream(brandedFoodStorageFile));
+        FoodDetailsStorage foodDetailsStorage = new FoodDetailsStorage(
+                new FileInputStream(foodDetailsStorageFile),
+                new FileOutputStream(foodDetailsStorageFile));
+
+        FoodAnalyzerServer server = new FoodAnalyzerServer(apiKey, foodStorage, brandedFoodStorage, foodDetailsStorage);
+        server.run();
     }
 
     public void run() {
@@ -88,10 +107,13 @@ public class FoodAnalyzerServer {
             SelectionKey key = keyIterator.next();
 
             if (key.isReadable()) {
+                System.out.println("new request");
                 SocketChannel client = (SocketChannel) key.channel();
                 String clientRequest = getRequestFromClient(client);
+                System.out.println(clientRequest);
                 String response = handleClientRequest(clientRequest);
                 sendResponse(client, response);
+                System.out.println("request handled");
             } else if (key.isAcceptable()) {
                 ServerSocketChannel sockChannel = (ServerSocketChannel) key.channel();
                 try {
@@ -110,10 +132,10 @@ public class FoodAnalyzerServer {
 
     private String getRequestFromClient(SocketChannel client) {
         StringBuilder command = new StringBuilder();
-        int readBytes = 0;
+        int readBytes = 1;
 
         try {
-            while (readBytes != END_OF_STREAM) {
+            while (readBytes > MORE_BYTES_TO_READ) {
                 inputBuffer.clear();
                 readBytes = client.read(inputBuffer);
                 inputBuffer.flip();
@@ -134,7 +156,10 @@ public class FoodAnalyzerServer {
             Command command = commandFactory.make(parser.getCommand(clientRequest));
             return command.execute(parser.getArguments(clientRequest));
         } catch (InvalidCommandException | InvalidNumberOfArgumentsException
-                | InvalidFoodIdException | InternalServerProblemException | NoMatchException e) {
+                | InvalidFoodIdException | NoMatchException e) {
+            return e.getMessage();
+        } catch (InternalServerProblemException e) {
+            e.printStackTrace();
             return e.getMessage();
         }
     }
