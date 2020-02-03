@@ -84,3 +84,6 @@ FoodAnalyzerClient/.classpath
 FoodAnalyzerClient/.project
 FoodAnalyzerClient/bin/
 FoodAnalyzerClient/.settings/
+FoodAnalyzerServer/brandedFoodStorage
+FoodAnalyzerServer/foodDetailsStorage
+FoodAnalyzerServer/foodStorage
