@@ -9,6 +9,7 @@ import java.nio.channels.SocketChannel;
 
 import bg.sofia.uni.fmi.mjt.client.request.ClientRequestHandler;
 import bg.sofia.uni.fmi.mjt.client.response.ServerResponseHandler;
+import bg.sofia.uni.fmi.mjt.reader.BarcodeReader;
 
 public class FoodAnalyzerClient {
     private static final String SERVER_NAME = "localhost";
@@ -21,7 +22,8 @@ public class FoodAnalyzerClient {
 
     public FoodAnalyzerClient(SocketChannel socketChannel, InputStream input, OutputStream output) {
         clientRequestHandler = new ClientRequestHandler(input,
-                Channels.newWriter(socketChannel, ENCODING));
+                Channels.newWriter(socketChannel, ENCODING),
+                new BarcodeReader());
         serverResponseHandler = new ServerResponseHandler(
                 Channels.newReader(socketChannel, ENCODING), output);
     }

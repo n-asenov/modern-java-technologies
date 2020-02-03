@@ -13,16 +13,18 @@ import bg.sofia.uni.fmi.mjt.reader.BarcodeReader;
 import bg.sofia.uni.fmi.mjt.reader.InvalidBarcodeImageException;
 
 public class ClientRequestHandler implements Runnable {
+    private static final String BARCODE_COMMAND = "get-food-by-barcode";
+    
     private InputStream input;
     private InputParser inputParser;
     private Writer output;
     private BarcodeReader barcodeReader;
 
-    public ClientRequestHandler(InputStream input, Writer output) {
+    public ClientRequestHandler(InputStream input, Writer output, BarcodeReader barcodeReader) {
         this.input = input;
         this.output = output;
+        this.barcodeReader = barcodeReader;
         inputParser = new InputParser();
-        barcodeReader = new BarcodeReader();
     }
 
     @Override
@@ -44,12 +46,11 @@ public class ClientRequestHandler implements Runnable {
         }
     }
 
-    private String getServerRequestMessage(String clientRequest)
+    public String getServerRequestMessage(String clientRequest)
             throws InvalidBarcodeImageException {
-        final String barcodeCommand = "get-food-by-barcode";
         String clientCommand = inputParser.getCommand(clientRequest);
 
-        if (clientCommand.equals(barcodeCommand)) {
+        if (clientCommand.equals(BARCODE_COMMAND)) {
             String barcode = getBarcode(inputParser.getArguments(clientRequest));
             return clientCommand + " " + barcode;
         }
@@ -81,8 +82,8 @@ public class ClientRequestHandler implements Runnable {
 
             if (imageOptionIndex != -1) {
                 int beginIndex = imageOptionIndex + imageOption.length();
-                String fileName = argument.substring(beginIndex);
-                return barcodeReader.decodeBarcode(fileName);
+                String imageName = argument.substring(beginIndex);
+                return barcodeReader.decodeBarcode(imageName);
             }
         }
 
