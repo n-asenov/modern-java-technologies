@@ -1,10 +1,8 @@
 package bg.sofia.uni.fmi.mjt.cache.storage;
 
-import java.io.EOFException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,23 +10,25 @@ import bg.sofia.uni.fmi.mjt.api.objects.Food;
 
 public class FoodStorage extends Storage {
 
-    public FoodStorage(InputStream input, OutputStream output) throws IOException {
-        super(input, output);
+    public FoodStorage(String foodStorageName) throws IOException {
+    	super(foodStorageName);
     }
     
-    public Set<Food> loadFoodData() throws ClassNotFoundException, IOException {
+    public Set<Food> loadFoodData() throws IOException {
         Set<Food> foods = new HashSet<>();
-        ObjectInputStream input = super.getInput();
         
-        try {
-            while (true) {
-                Food currentFood = (Food) input.readObject();
-                foods.add(currentFood);
-            }
-        } catch (EOFException e) {
-            input.close();
+        try (var reader = new BufferedReader(new FileReader(getStorage()))){
+            String line = reader.readLine();
             
-            return foods;
+            while (line != null) {
+            	Food food = GSON.fromJson(line, Food.class);
+            	foods.add(food);
+            	line = reader.readLine();
+            }
+        } catch(IOException e) {
+        	throw new IOException("Could not load food storage", e);
         }
+        
+        return foods;
     }
 }

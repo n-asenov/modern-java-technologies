@@ -1,10 +1,8 @@
 package bg.sofia.uni.fmi.mjt.cache.storage;
 
-import java.io.EOFException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,25 +10,24 @@ import bg.sofia.uni.fmi.mjt.api.objects.BrandedFood;
 
 public class BrandedFoodStorage extends Storage {
 
-    public BrandedFoodStorage(InputStream input, OutputStream output) throws IOException {
-        super(input, output);
-    }
+	public BrandedFoodStorage(String brandedFoodStorageName) throws IOException {
+		super(brandedFoodStorageName);
+	}
 
-    public Map<String, BrandedFood> loadBrandedFoodData()
-            throws ClassNotFoundException, IOException {
-        Map<String, BrandedFood> brandedFoods = new HashMap<>();
-        ObjectInputStream input = super.getInput();
+	public Map<String, BrandedFood> loadBrandedFoodData() throws IOException {
+		Map<String, BrandedFood> brandedFoods = new HashMap<>();
 
-        try {
-            while (true) {
-                BrandedFood currentBrandedFood = (BrandedFood) input.readObject();
-                brandedFoods.put(currentBrandedFood.getGtinUpc(), currentBrandedFood);
-            }
-        } catch (EOFException e) {
-            input.close();
+		try (var reader = new BufferedReader(new FileReader(getStorage()))) {
+			String line = reader.readLine();
 
-            return brandedFoods;
-        }
-    }
+			while (line != null) {
+				BrandedFood brandedFood = GSON.fromJson(line, BrandedFood.class);
+				brandedFoods.put(brandedFood.getGtinUpc(), brandedFood);
+				line = reader.readLine();
+			}
+		}
+
+		return brandedFoods;
+	}
 
 }

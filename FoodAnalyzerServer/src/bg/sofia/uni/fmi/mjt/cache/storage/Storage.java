@@ -1,40 +1,37 @@
 package bg.sofia.uni.fmi.mjt.cache.storage;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 
-public abstract class Storage  {
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
-    
-    public Storage(InputStream input, OutputStream output) throws IOException {
-        try {
-            this.output = new ObjectOutputStream(output);
-            this.input = new ObjectInputStream(input);
-        } catch (IOException e) {
-            throw new IOException("Failed to create cache storage");
-        }
-    }
-    
-    public ObjectInputStream getInput() {
-        return input;
-    }
+import com.google.gson.Gson;
 
-    public void saveObjectData(Object object) throws IOException {
-        output.writeObject(object);
-    }
-    
-    public void close() throws IOException {
-        if (input != null) {
-            input.close();
-        }
-        
-        if (output != null) {
-            output.close();
-        }
-    }
-    
+public abstract class Storage {
+	private static final String NEW_LINE = System.lineSeparator();
+
+	protected static final Gson GSON = new Gson();
+
+	private File storage;
+
+	public Storage(String storageName) throws IOException {
+		storage = new File(storageName);
+		try {
+			storage.createNewFile();
+		} catch (IOException e) {
+			throw new IOException("Could not create food storage file", e);
+		}
+	}
+
+	public File getStorage() {
+		return storage;
+	}
+
+	public void saveObjectData(Object object) throws IOException {
+		try (FileWriter writer = new FileWriter(storage, true)) {
+			writer.write(GSON.toJson(object));
+			writer.write(NEW_LINE);
+			writer.flush();
+		}
+	}
+
 }
