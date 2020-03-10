@@ -37,7 +37,7 @@ public class FoodAnalyzerServer {
 	private ByteBuffer inputBuffer;
 
 	public FoodAnalyzerServer(String apiKey, String foodStorageName, String brandedFoodStorageName,
-			String foodDetailsStorageName) throws IOException {
+			String foodDetailsStorageName) throws InternalServerProblemException  {
 		serverCache = new ServerCache(foodStorageName, brandedFoodStorageName, foodDetailsStorageName);
 		apiClient = new FoodDataApiClient(HttpClient.newHttpClient(), apiKey);
 		commandFactory = new CommandFactory(serverCache, apiClient);
@@ -53,7 +53,7 @@ public class FoodAnalyzerServer {
 					"foodDetailsStorage");
 
 			server.run();
-		} catch (IOException e) {
+		} catch (InternalServerProblemException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}

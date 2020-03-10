@@ -1,11 +1,13 @@
 package bg.sofia.uni.fmi.mjt.commands;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import bg.sofia.uni.fmi.mjt.api.FoodDataApiClient;
 import bg.sofia.uni.fmi.mjt.api.InvalidFoodIdException;
 import bg.sofia.uni.fmi.mjt.api.NoMatchException;
+import bg.sofia.uni.fmi.mjt.api.objects.BrandedFood;
 import bg.sofia.uni.fmi.mjt.api.objects.Food;
 import bg.sofia.uni.fmi.mjt.cache.ServerCache;
 import bg.sofia.uni.fmi.mjt.commands.exceptions.InternalServerProblemException;
@@ -88,19 +90,24 @@ public class GetFoodByName implements Command {
 
     private void saveFoodsInServerCache(List<Food> foods) throws InternalServerProblemException {
         String branded = "Branded";
-
+        List<BrandedFood> brandedFoods = new ArrayList<>();
+        
         try {
             for (Food food : foods) {
-                serverCache.saveFood(food);
-
                 if (food.getDataType().equals(branded)) {
-                    serverCache.saveBrandedFood(apiClient.getBrandedFood(food.getFdcId()));
+                    brandedFoods.add(apiClient.getBrandedFood(food.getFdcId()));
                 }
             }
         } catch (IOException | InterruptedException | InvalidFoodIdException e) {
             String message = "Internal server problem occured";
 
             throw new InternalServerProblemException(message, e);
+        }
+
+        serverCache.saveFoods(foods);
+        
+        if (!brandedFoods.isEmpty()) {
+        	serverCache.saveBrandedFoods(brandedFoods);
         }
     }
 

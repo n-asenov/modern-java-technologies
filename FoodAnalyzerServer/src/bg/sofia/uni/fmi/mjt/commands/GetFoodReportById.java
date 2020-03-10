@@ -69,15 +69,8 @@ public class GetFoodReportById implements Command {
         }
     }
 
-    private void saveFoodDetailsInServerCache(FoodDetails foodDetails)
-            throws InternalServerProblemException {
-        try {
-            serverCache.saveFoodDetails(foodDetails);
-        } catch (IOException e) {
-            String message = "Internal server problem occured";
-
-            throw new InternalServerProblemException(message, e);
-        }
-    }
+	private void saveFoodDetailsInServerCache(FoodDetails foodDetails) throws InternalServerProblemException {
+		serverCache.saveFoodDetails(foodDetails);
+	}
 
 }

@@ -76,8 +76,8 @@ public class GetFoodByNameTest {
 
         verify(serverCache).containsFood(arguments);
         verify(serverCache, never()).getFood(arguments);
-        verify(serverCache).saveFood(food);
-        verify(serverCache, never()).saveBrandedFood(any());
+        verify(serverCache).saveFoods(List.of(food));
+        verify(serverCache, never()).saveBrandedFoods(any());
         verify(apiClient).searchFood(foodName);
         verify(apiClient, never()).getBrandedFood(food.getFdcId());
 
@@ -101,8 +101,8 @@ public class GetFoodByNameTest {
 
         verify(serverCache).containsFood(arguments);
         verify(serverCache, never()).getFood(arguments);
-        verify(serverCache).saveFood(food);
-        verify(serverCache).saveBrandedFood(brandedFood);
+        verify(serverCache).saveFoods(List.of(food));
+        verify(serverCache).saveBrandedFoods(List.of(brandedFood));
         verify(apiClient).searchFood(foodName);
         verify(apiClient).getBrandedFood(food.getFdcId());
 
